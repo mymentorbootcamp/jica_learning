@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: first-blue-jicalearning
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jicalearning-app
+      version: blue
+  template:
+    metadata:
+      name: first-blue-jicalearning-pod
+      labels:
+        app: jicalearning-app
+        version: blue
+    spec:
+      containers:
+      - name: jicalearning-container
+        image: wahyusutejo1986/jica_learning:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service 
+metadata:
+  name: jicalearning-svc
+  labels:
+    app: jicalearning-app
+spec:
+  selector:
+    app: jicalearning-app
+    version: blue
+  type: NodePort
+  ports:
+  - nodePort: 32123
+    port: 80
+    targetPort: 80
